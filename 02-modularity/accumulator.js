@@ -1,19 +1,44 @@
-let result = 0;
-let accumulator = {
+/*
+console.log('loading accmulatorFactory');
+function accmulatorFactory(){
+	let result = 0;
+	let accumulator = {
+		add(value){
+			result += value;
+		},
+		subtract(value){
+			result -= value;
+		},
+		multiply(value){
+			result *= value;
+		},
+		divide(value){
+			result /= value;
+		},
+		getResult(){
+			return result;
+		}
+	};
+	return accumulator;
+}
+module.exports = accmulatorFactory;
+*/
+
+class Accumulator{
+	constructor(){
+		this.result = 0;
+	}
 	add(value){
-		result += value;
-	},
+		this.result += value;
+	}
 	subtract(value){
-		result -= value;
-	},
+		this.result -= value;
+	}
 	multiply(value){
-		result *= value;
-	},
+		this.result *= value;
+	}
 	divide(value){
-		result /= value;
-	},
-	getResult(){
-		return result;
+		this.result /= value;
 	}
 }
-module.exports = accumulator;
+module.exports = Accumulator;

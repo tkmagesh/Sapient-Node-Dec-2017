@@ -5,7 +5,11 @@ let http = require('http'),
 	querystring = require('querystring'),
 	calculator = require('./calculator');
 
-//extensions = html, css, js, jpg, png, ico, json, xml
+let staticExtns = ['.html', '.css', '.js', '.jpg', '.png', '.ico', '.json', '.xml'];
+
+function isStatic(resource){
+	return staticExtns.indexOf(path.extname(resource)) !== -1;
+}
 
 let server = http.createServer(function(req, res){
 
@@ -13,7 +17,7 @@ let server = http.createServer(function(req, res){
 		rawData = querystring.parse(urlObj.query),
 		resourcePath = path.join(__dirname, urlObj.pathname);
 
-	if (urlObj.pathname === '/calculator-get.html'){
+	if (isStatic(urlObj.pathname)){
 		if (!fs.existsSync(resourcePath)){
 			res.statusCode = 404;
 			res.end();

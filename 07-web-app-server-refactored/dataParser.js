@@ -4,5 +4,16 @@ var url = require('url'),
 module.exports = function(req, res, next){
 	req['urlObj'] = url.parse(req.url),
 	req['queryData'] = querystring.parse(req.urlObj.query);
-	next();
+	if (req.method === "GET"){
+		next();
+		return;
+	}
+	let data = '';
+	req.on('data', function(chunk){
+		data += chunk;
+	});
+	req.on('end', function(){
+		req.bodyData = querystring.parse(data);
+		next();
+	});
 }

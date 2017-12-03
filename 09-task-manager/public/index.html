@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{title}}</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script src="/javascripts/jquery-3.2.1.min.js"></script>
+    <script src="/javascripts/handlebars-v4.0.11.js"></script>
+    <script type="text/x-handlebars-template" id="listTemplate">
+    	<h3>{{tasks.length}}</h3>
+    	<ol id="taskList">
+			{{#each tasks}}
+				<li>{{this.name}}</li>
+			{{/each}}
+		</ol>
+    </script>
+    <script type="text/x-handlebars-template" id="taskTemplate">
+        <li>{{this.name}}</li>
+    </script>
+    <script>
+    	$(function(){
+    		let listTemplateHtml = $('#listTemplate').html();
+    		let listTemplateFn = Handlebars.compile(listTemplateHtml);
+
+            let taskTemplateHtml = $('#taskTemplate').html();
+            let taskTemplateFn = Handlebars.compile(taskTemplateHtml);
+
+    		$.getJSON('/tasks', function(taskData){
+				let viewData = { tasks : taskData };
+	    		let generatedHTML = listTemplateFn(viewData);
+	    		$('#taskManager').html(generatedHTML);	
+			});
+    	   
+           $('#btnCreate').click(function(){
+                let newTaskData = {
+                    id : 0,
+                    name : $('#txtTaskName').val(),
+                    isCompleted : false
+                };
+                $.post('/tasks', newTaskData, function(response){
+                    let viewData = response;
+                    let generatedHTML = taskTemplateFn(viewData);
+                    $('#taskList').append(generatedHTML);
+                });
+           })	
+    	})
+    </script>
+  </head>
+  <body>
+    <h1>Task Manager</h1>
+	<hr/>
+    <label>New Task :</label>
+    <input type="text" id="txtTaskName" />
+    <input type="button" value="Create" id="btnCreate">
+	<div id="taskManager"></div>
+  </body>
+</html>

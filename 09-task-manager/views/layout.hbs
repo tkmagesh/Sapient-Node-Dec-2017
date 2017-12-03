@@ -4,6 +4,31 @@
     <title>{{title}}</title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
     <script src="/javascripts/jquery-3.2.1.min.js"></script>
+    <script src="/javascripts/handlebars-v4.0.11.js"></script>
+    <script type="text/x-handlebars-template" id="listTemplate">
+    	<div>{{tasks.length}}</div>
+    	<ol>
+			{{#each tasks}}
+				<li>{{this}}</li>
+			{{/each}}
+		</ol>
+    </script>
+    <script>
+    	$(function(){
+    		let templateHtml = $('#listTemplate').html();
+    		let templateFn = Handlebars.compile(templateHtml);
+    		let data = ["abc", "xyz"];
+			let viewData = { tasks : data };
+    		let generatedHTML = templateFn(viewData);
+    		console.log(generatedHTML);
+    		$('#taskList').html(generatedHTML);	
+    		
+    		$.getJSON('/tasks', function(taskData){
+    			
+			});
+    		
+    	})
+    </script>
   </head>
   <body>
     {{{body}}}

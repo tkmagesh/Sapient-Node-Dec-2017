@@ -1,5 +1,5 @@
-module.exports = function(res){
-	console.log('notFoundHandler triggered');
+module.exports = function(req, res, next){
 	res.statusCode = 404;
 	res.end();
+	next();
 }

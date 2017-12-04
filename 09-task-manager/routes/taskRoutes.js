@@ -4,7 +4,7 @@ var taskService = require('../services/taskService');
 
 
 router.get('/', function(req, res, next) {
-	res.json(taskService.getAll());
+	taskService.getAll((tasks) => res.json(tasks));
 });
 
 router.post('/', function(req, res,next){
@@ -17,14 +17,17 @@ router.post('/', function(req, res,next){
 router.put('/:id', function(req, res, next){
 	let updatedTaskId = parseInt(req.params.id),
 		updatedTaskData = req.body;
-	let updatedTask = taskService.update(updatedTaskId, updatedTaskData);
-	res.status(200).json(updatedTask);
+	taskService.update(updatedTaskId, updatedTaskData, function(updatedTask){
+		res.status(200).json(updatedTask);	
+	});
+	
 });
 
 router.delete('/:id', function(req, res, next){
 	let deletedTaskId = parseInt(req.params.id);
-	taskService.remove(deletedTaskId);
-	res.status(200).json({});
+	taskService.remove(deletedTaskId, function(){
+		res.status(200).json({});	
+	});
 });
 
 module.exports = router;

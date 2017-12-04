@@ -4,26 +4,33 @@ let tasks = [
 	{id : 3, name : 'Plan vacation', isCompleted : false},
 ];
 
-function getAll(){
-	return tasks;
+function getAll(onComplete){
+	setTimeout(function(){
+		onComplete(tasks);
+	},4000);
 }
 
 function addNew(newTask, onComplete){
-	let newTaskId = tasks.reduce((prevResult, task) => prevResult > task.id ? prevResult : task.id, 0) + 1;
-	newTask.id = newTaskId;
 	setTimeout(function(){
+		let newTaskId = tasks.reduce((prevResult, task) => prevResult > task.id ? prevResult : task.id, 0) + 1;
+		newTask.id = newTaskId;
 		tasks.push(newTask);
 		onComplete(newTask);
 	},4000);
 }
 
-function update(id, updatedTask){
-	tasks = tasks.map(taskInList => taskInList.id === id ? updatedTask : taskInList);
-	return updatedTask;
+function update(id, updatedTask, onComplete){	
+	setTimeout(function(){
+		tasks = tasks.map(taskInList => taskInList.id === id ? updatedTask : taskInList);
+		onComplete(updatedTask);
+	},4000);
 }
 
-function remove(id){
-	tasks = tasks.filter(taskInList => taskInList.id !== id);
+function remove(id, onComplete){
+	setTimeout(function(){
+		tasks = tasks.filter(taskInList => taskInList.id !== id);
+		onComplete();
+	},4000);
 }
 
 module.exports = {
